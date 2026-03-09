@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BookWise — AI Book Recommendations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ─── LOADER ─────────────────────────────────────────── -->
+<div id="loader">
+  <div class="loader-inner">
+    <div class="loader-book"><i class="fas fa-book-open"></i></div>
+    <p>BookWise</p>
+  </div>
+</div>
+
+<!-- ─── NAVBAR ─────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#hero"><i class="fas fa-book-open"></i> BookWise</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#search">Search</a>
+      <a href="#categories">Categories</a>
+      <a href="#ai-recs">AI Picks</a>
+      <a href="#my-list">My List</a>
+    </div>
+    <div class="nav-actions">
+      <span id="userEmail" class="user-email"></span>
+      <button id="authBtn" class="btn-auth" onclick="openAuthModal()">Login</button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── HERO ────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">AI-Powered Discovery</div>
+    <h1 class="hero-title">Find Your Next<br /><em>Great Read</em></h1>
+    <p class="hero-sub">Personalised recommendations, AI summaries, and a reading list — all in one place.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="smoothScrollTo('#search')">
+        <i class="fas fa-search"></i> Search Books
+      </button>
+      <button class="btn-ghost" onclick="smoothScrollTo('#ai-recs')">
+        <i class="fas fa-robot"></i> Get AI Picks
+      </button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span>40M+</span><small>Books Available</small></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><span>AI</span><small>Powered</small></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><span>Free</span><small>To Use</small></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="floating-cards">
+      <div class="f-card c1"><i class="fas fa-book"></i></div>
+      <div class="f-card c2"><i class="fas fa-bookmark"></i></div>
+      <div class="f-card c3"><i class="fas fa-star"></i></div>
+      <div class="f-card c4"><i class="fas fa-robot"></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SEARCH SECTION ──────────────────────────────────── -->
+<section id="search">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2>Search Books</h2>
+      <p>Search by title, author, or ISBN from millions of books</p>
+    </div>
+    <div class="search-box">
+      <div class="search-input-wrap">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" placeholder="e.g. Harry Potter, J.K. Rowling, 978..." />
+        <button id="searchBtn" class="btn-search" onclick="searchBooks()">Search</button>
+      </div>
+      <div class="search-filters">
+        <label class="radio-pill"><input type="radio" name="searchType" value="intitle" checked /> Title</label>
+        <label class="radio-pill"><input type="radio" name="searchType" value="inauthor" /> Author</label>
+        <label class="radio-pill"><input type="radio" name="searchType" value="isbn" /> ISBN</label>
+      </div>
+    </div>
+    <div id="searchResults" class="book-grid"></div>
+  </div>
+</section>
+
+<!-- ─── CATEGORIES ──────────────────────────────────────── -->
+<section id="categories">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2>Browse by Category</h2>
+      <p>Explore books by your favourite genre</p>
+    </div>
+    <div class="categories-grid">
+      <button class="cat-card" onclick="searchCategory('nature wildlife environment ecology')">
+        <div class="cat-img cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=80')">
+          <div class="cat-img-overlay"></div>
+          <i class="fas fa-leaf"></i>
+        </div>
+        <div class="cat-body">
+          <div class="cat-name">Nature</div>
+          <div class="cat-desc">Wildlife, ecology &amp; the natural world</div>
+          <div class="cat-count"><i class="fas fa-arrow-right"></i> Explore</div>
+        </div>
+      </button>
+      <button class="cat-card" onclick="searchCategory('psychological thriller mind crime suspense')">
+        <div class="cat-img cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1509909756405-be0199881695?w=400&q=80')">
+          <div class="cat-img-overlay"></div>
+          <i class="fas fa-brain"></i>
+        </div>
+        <div class="cat-body">
+          <div class="cat-name">Mind Games</div>
+          <div class="cat-desc">Psychological thrillers &amp; suspense</div>
+          <div class="cat-count"><i class="fas fa-arrow-right"></i> Explore</div>
+        </div>
+      </button>
+      <button class="cat-card" onclick="searchCategory('history historical events war civilization')">
+        <div class="cat-img cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=400&q=80')">
+          <div class="cat-img-overlay"></div>
+          <i class="fas fa-landmark"></i>
+        </div>
+        <div class="cat-body">
+          <div class="cat-name">History</div>
+          <div class="cat-desc">Ancient civilizations &amp; world events</div>
+          <div class="cat-count"><i class="fas fa-arrow-right"></i> Explore</div>
+        </div>
+      </button>
+      <button class="cat-card" onclick="searchCategory('space astronomy universe cosmos science')">
+        <div class="cat-img cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&q=80')">
+          <div class="cat-img-overlay"></div>
+          <i class="fas fa-rocket"></i>
+        </div>
+        <div class="cat-body">
+          <div class="cat-name">Space</div>
+          <div class="cat-desc">Astronomy, cosmos &amp; space exploration</div>
+          <div class="cat-count"><i class="fas fa-arrow-right"></i> Explore</div>
+        </div>
+      </button>
+      <button class="cat-card" onclick="searchCategory('crime detective mystery noir investigation')">
+        <div class="cat-img cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1453873531674-2151bcd01707?w=400&q=80')">
+          <div class="cat-img-overlay"></div>
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+        <div class="cat-body">
+          <div class="cat-name">Crime</div>
+          <div class="cat-desc">Detectives, noir &amp; true crime</div>
+          <div class="cat-count"><i class="fas fa-arrow-right"></i> Explore</div>
+        </div>
+      </button>
+      <button class="cat-card" onclick="searchCategory('self help wellness mindfulness mental health')">
+        <div class="cat-img cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=400&q=80')">
+          <div class="cat-img-overlay"></div>
+          <i class="fas fa-heart-pulse"></i>
+        </div>
+        <div class="cat-body">
+          <div class="cat-name">Self Care</div>
+          <div class="cat-desc">Wellness, mindfulness &amp; mental health</div>
+          <div class="cat-count"><i class="fas fa-arrow-right"></i> Explore</div>
+        </div>
+      </button>
+      <button class="cat-card" onclick="searchCategory('technology artificial intelligence programming digital future')">
+        <div class="cat-img cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80')">
+          <div class="cat-img-overlay"></div>
+          <i class="fas fa-microchip"></i>
+        </div>
+        <div class="cat-body">
+          <div class="cat-name">Tech Life</div>
+          <div class="cat-desc">AI, coding &amp; the digital revolution</div>
+          <div class="cat-count"><i class="fas fa-arrow-right"></i> Explore</div>
+        </div>
+      </button>
+      <button class="cat-card" onclick="searchCategory('wilderness survival adventure outdoor exploration')">
+        <div class="cat-img cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80')">
+          <div class="cat-img-overlay"></div>
+          <i class="fas fa-mountain"></i>
+        </div>
+        <div class="cat-body">
+          <div class="cat-name">Wilderness</div>
+          <div class="cat-desc">Survival, adventure &amp; exploration</div>
+          <div class="cat-count"><i class="fas fa-arrow-right"></i> Explore</div>
+        </div>
+      </button>
+    </div>
+    <div id="categoryResults" class="book-grid" style="margin-top:40px;"></div>
+  </div>
+</section>
+
+<!-- ─── AI RECOMMENDATIONS ──────────────────────────────── -->
+<section id="ai-recs">
+  <div class="section-inner">
+    <div class="section-header light">
+      <div class="ai-badge"><i class="fas fa-robot"></i> Powered by Groq AI</div>
+      <h2>Personalised AI Recommendations</h2>
+      <p>Describe what you enjoy reading and get hand-picked suggestions</p>
+    </div>
+    <div class="ai-input-card">
+      <label for="prefInput">What kind of books do you love?</label>
+      <textarea id="prefInput" rows="3"
+        placeholder="e.g. I love psychological thrillers, books like Gone Girl, fast-paced plots with unreliable narrators..."></textarea>
+      <button class="btn-primary ai-go-btn" onclick="getAIRecommendations()">
+        <i class="fas fa-wand-magic-sparkles"></i> Generate My Reading List
+      </button>
+    </div>
+    <div id="aiResults" class="book-grid"></div>
+  </div>
+</section>
+
+<!-- ─── MY READING LIST ──────────────────────────────────── -->
+<section id="my-list">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2>My Reading List</h2>
+      <p>Track your books — to read, currently reading, and completed</p>
+    </div>
+    <div id="readingList" class="book-grid"></div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ──────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-col footer-col-brand">
+      <div class="footer-brand">
+        <span><i class="fas fa-book-open"></i> BookWise</span>
+        <p>Your AI-powered reading companion. Discover, track, and fall in love with books — all in one place.</p>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-section-title">Navigate</div>
+      <div class="footer-links">
+        <a href="#search"><i class="fas fa-search"></i> Search Books</a>
+        <a href="#categories"><i class="fas fa-layer-group"></i> Browse Categories</a>
+        <a href="#ai-recs"><i class="fas fa-robot"></i> AI Recommendations</a>
+        <a href="#my-list"><i class="fas fa-bookmark"></i> My Reading List</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-section-title">Company</div>
+      <div class="footer-links">
+        <a href="#" onclick="openInfoModal('about')"><i class="fas fa-info-circle"></i> About BookWise</a>
+        <a href="#" onclick="openInfoModal('contact')"><i class="fas fa-envelope"></i> Contact Us</a>
+        <a href="#" onclick="openInfoModal('community')"><i class="fas fa-users"></i> Community Guidelines</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-section-title">Legal</div>
+      <div class="footer-links">
+        <a href="#" onclick="openInfoModal('terms')"><i class="fas fa-file-contract"></i> Terms &amp; Conditions</a>
+        <a href="#" onclick="openInfoModal('privacy')"><i class="fas fa-shield-halved"></i> Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 BookWise — Final Year Project | Bahauddin Zakariya University, Multan</p>
+  </div>
+</footer>
+
+<!-- ─── TOAST ────────────────────────────────────────────── -->
+<div id="toast" class="toast-wrap"></div>
+
+<!-- ─── BOOK DETAIL MODAL ────────────────────────────────── -->
+<div id="bookModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ─── AUTH MODAL ───────────────────────────────────────── -->
+<div id="authModal" class="modal-overlay hidden">
+  <div class="modal-box modal-auth">
+    <button class="modal-close" onclick="closeAuthModal()"><i class="fas fa-times"></i></button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="loginTabBtn" onclick="switchAuthTab('login')">Login</button>
+      <button class="auth-tab" id="registerTabBtn" onclick="switchAuthTab('register')">Register</button>
+    </div>
+
+    <!-- Login -->
+    <div id="loginForm">
+      <h3>Welcome Back</h3>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" />
+      </div>
+      <button class="btn-primary full-width" onclick="loginUser()">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </button>
+      <p class="auth-switch">Don't have an account? <a href="#" onclick="switchAuthTab('register')">Register here</a></p>
+    </div>
+
+    <!-- Register -->
+    <div id="registerForm" class="hidden">
+      <h3>Create Account</h3>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="regEmail" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="regPassword" placeholder="Min. 6 characters" />
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="regConfirm" placeholder="Repeat password" />
+      </div>
+      <button class="btn-primary full-width" onclick="registerUser()">
+        <i class="fas fa-user-plus"></i> Create Account
+      </button>
+      <p class="auth-switch">Already have an account? <a href="#" onclick="switchAuthTab('login')">Login here</a></p>
+      <p style="font-size:0.75rem;color:var(--text-dim);margin-top:10px;text-align:center;">
+        ⚠️ Enable <strong>Email/Password</strong> in
+        <a href="https://console.firebase.google.com" target="_blank" style="color:var(--gold)">Firebase Console</a>
+        → Authentication → Sign-in method
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FIREBASE SDK ─────────────────────────────────────── -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<!-- ─── PROJECT SCRIPTS ──────────────────────────────────── -->
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/books.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/readinglist.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+
+
+<!-- ─── INFO MODALS ──────────────────────────────────────── -->
+<div id="infoModal" class="modal-overlay hidden">
+  <div class="modal-box modal-info">
+    <button class="modal-close" onclick="closeInfoModal()"><i class="fas fa-times"></i></button>
+    <div id="infoModalContent"></div>
+  </div>
+</div>
+
+<script>
+const INFO_CONTENT = {
+  about: {
+    title: 'About BookWise',
+    icon: 'fa-book-open',
+    body: `
+      <div class="about-hero">
+        <p>This project is a specialized <strong>AI-Driven Book Recommendation Engine</strong> designed to solve the "Context Trap" in modern search. Unlike standard algorithms that only match keywords, this system uses <strong>Deep Intent Analysis</strong> to distinguish between genres. Our primary mission is to provide high-quality recommendations in Nature, Science, and History, while strictly filtering out irrelevant fiction or romance unless specifically requested. Developed as a Final Year Project, it combines the power of LLMs (Large Language Models) with verified metadata from the Google Books API to ensure every suggestion is real, accurate, and meaningful.</p>
+      </div>
+      <h4>Our Features</h4>
+      <div class="about-features">
+        <div class="about-feature"><i class="fas fa-search"></i><span>Search 40M+ books by title, author or ISBN</span></div>
+        <div class="about-feature"><i class="fas fa-robot"></i><span>AI recommendations via Deep Intent Analysis</span></div>
+        <div class="about-feature"><i class="fas fa-layer-group"></i><span>8 curated genre categories</span></div>
+        <div class="about-feature"><i class="fas fa-bookmark"></i><span>Personal reading list with progress tracking</span></div>
+        <div class="about-feature"><i class="fas fa-comments"></i><span>Full AI chat for book discovery</span></div>
+        <div class="about-feature"><i class="fas fa-file-pdf"></i><span>Free PDF and online reading links</span></div>
+      </div>
+      <h4>The Developer</h4>
+      <div class="contact-info-box">
+        <p><i class="fas fa-user"></i> <strong>Asmat Ullah</strong> — Lead AI Developer / Researcher</p>
+        <p><i class="fas fa-envelope"></i> mr.asmat.com@gmail.com</p>
+        <p><i class="fas fa-university"></i> Bahauddin Zakariya University, Multan</p>
+      </div>
+    `
+  },
+  contact: {
+    title: 'Get in Touch',
+    icon: 'fa-envelope',
+    body: `
+      <p>For academic inquiries or technical collaborations regarding AI and Semantic Search, feel free to reach out.</p>
+      <div class="contact-info-box">
+        <p><i class="fas fa-user"></i> <strong>ASMAT ULLAH</strong></p>
+        <p><i class="fas fa-code"></i> <strong>Role:</strong> Lead AI Developer / Researcher</p>
+        <p><i class="fas fa-envelope"></i> <strong>Email:</strong> mr.asmat.com@gmail.com</p>
+        <p><i class="fas fa-clock"></i> <strong>Availability:</strong> Academic inquiries &amp; technical collaborations</p>
+      </div>
+      <h4>Send a Message</h4>
+      <div class="form-group"><label>Your Name</label><input type="text" id="contactName" placeholder="Your full name" /></div>
+      <div class="form-group"><label>Your Email</label><input type="email" id="contactEmail" placeholder="your@email.com" /></div>
+      <div class="form-group"><label>Subject</label><input type="text" id="contactSubject" placeholder="e.g. Research collaboration, Bug report..." /></div>
+      <div class="form-group"><label>Message</label><textarea id="contactMsg" rows="4" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:12px;font-size:0.88rem;resize:vertical;outline:none;margin-top:2px;" placeholder="Write your message here..."></textarea></div>
+      <button class="btn-primary full-width" onclick="submitContact()"><i class="fas fa-paper-plane"></i> Send Message</button>
+    `
+  },
+  terms: {
+    title: 'Terms of Service',
+    icon: 'fa-file-contract',
+    body: `
+      <p class="info-date"><i class="fas fa-calendar"></i> Last updated: January 2025</p>
+      <p>By using this service, you agree to the following terms. Please read them carefully.</p>
+      <h4>1. Usage</h4>
+      <p>This tool is for <strong>educational and personal recommendation purposes only.</strong> You may not use BookWise for commercial purposes, reselling, or automated data harvesting.</p>
+      <h4>2. Accuracy</h4>
+      <p>While we strive for 100% accuracy through API verification, <strong>AI-generated summaries are for descriptive purposes and may vary from the actual text.</strong> Always refer to the original book for accurate content.</p>
+      <h4>3. Service Limits</h4>
+      <p>We reserve the right to <strong>limit queries per user</strong> to maintain system stability during the deployment phase. Excessive or automated requests may result in temporary access restrictions.</p>
+      <h4>4. User Accounts</h4>
+      <p>You are responsible for keeping your login credentials secure. We are not liable for unauthorized access resulting from your failure to protect your credentials.</p>
+      <h4>5. Third-Party Services</h4>
+      <p>BookWise uses Google Books API and Groq AI. Results from these services are subject to their own terms. We are not responsible for content accuracy from third-party sources.</p>
+      <h4>6. Intellectual Property</h4>
+      <p>All book metadata, covers, and descriptions belong to their respective publishers and rights holders. BookWise does not claim ownership of any book content shown on this platform.</p>
+      <h4>7. Disclaimer</h4>
+      <p>The service is provided "as is." We make no guarantees about uptime, accuracy of AI suggestions, or availability of free PDF links.</p>
+      <h4>8. Changes</h4>
+      <p>We may update these terms at any time. Continued use of BookWise means you accept the updated terms.</p>
+    `
+  },
+  privacy: {
+    title: 'Your Data',
+    icon: 'fa-shield-halved',
+    body: `
+      <p class="info-date"><i class="fas fa-calendar"></i> Last updated: January 2025</p>
+      <p>Your privacy is a <strong>cornerstone of this project.</strong> Here is exactly what we collect and what we do with it.</p>
+      <h4>1. Data Collection</h4>
+      <p>We <strong>do not collect personal identities.</strong> We only store search "Intents" — meaning the types of books you search for — to improve the AI's recommendation accuracy over time. No names, no phone numbers, no location data.</p>
+      <h4>2. Account Data</h4>
+      <p>If you create an account, we store your email address and a securely hashed password via Firebase Authentication. We never see your raw password.</p>
+      <h4>3. Reading List Data</h4>
+      <p>Books you save, their reading status, and star ratings are stored in your personal Firebase Firestore database — accessible only by you when logged in.</p>
+      <h4>4. Third-Party APIs</h4>
+      <p>This site communicates with the <strong>Google Books API</strong> to fetch book details. <strong>No personal user data is shared with external parties.</strong> Your search query is sent to Google Books only to retrieve book results — Google's own privacy policy applies to this.</p>
+      <h4>5. Cookies</h4>
+      <p>We use <strong>minimal session cookies</strong> to remember your current search session and keep you logged in. No advertising, tracking, or analytics cookies are used.</p>
+      <h4>6. AI Queries</h4>
+      <p>When you use the AI chat or recommendations, your typed message is sent to Groq AI to generate a response. We do not store these messages on our end.</p>
+      <h4>7. Your Rights</h4>
+      <p>You can request deletion of your account and all associated data at any time by emailing mr.asmat.com@gmail.com.</p>
+    `
+  },
+  community: {
+    title: 'Our Standards',
+    icon: 'fa-users',
+    body: `
+      <p>To keep our book community a space for <strong>learning and discovery</strong>, we ask all users to follow these standards.</p>
+      <div class="about-features">
+        <div class="about-feature"><i class="fas fa-bullseye"></i><span>Be specific in your queries</span></div>
+        <div class="about-feature"><i class="fas fa-shield-alt"></i><span>Respect the platform's purpose</span></div>
+        <div class="about-feature"><i class="fas fa-ban"></i><span>No spam or automated queries</span></div>
+        <div class="about-feature"><i class="fas fa-comment-dots"></i><span>Give honest feedback</span></div>
+      </div>
+      <h4>1. Be Specific</h4>
+      <p>Use <strong>clear, descriptive language</strong> when asking the AI for recommendations. The more specific you are, the better the AI understands your intent. Instead of "good book", try "a non-fiction book about climate change written for general readers".</p>
+      <h4>2. Respect the Niche</h4>
+      <p>This platform focuses on <strong>Nature, Science, and factual discovery</strong> as its core strength. While all genres are supported, the AI performs best with specific, knowledge-driven requests.</p>
+      <h4>3. No Spam</h4>
+      <p>Avoid <strong>repetitive or automated queries</strong> that may stress the API limits. Each query consumes API resources — please use them thoughtfully and purposefully.</p>
+      <h4>4. Feedback</h4>
+      <p>If the AI suggests an <strong>incorrect genre or irrelevant book</strong>, please use our Contact form to report it. Your feedback directly helps us refine the model and improve accuracy for all users.</p>
+      <h4>5. Free Content</h4>
+      <p>Only use the Free PDF and Read Online features for books that are legally available. Do not seek or share pirated content through this platform.</p>
+      <h4>Enforcement</h4>
+      <p>Violations may result in account suspension. Contact mr.asmat.com@gmail.com for any questions.</p>
+    `
+  }
+};
+
+function openInfoModal(type) {
+  const info = INFO_CONTENT[type];
+  if (!info) return;
+  document.getElementById('infoModalContent').innerHTML = \`
+    <div class="info-modal-header">
+      <i class="fas \${info.icon}"></i>
+      <h2>\${info.title}</h2>
+    </div>
+    <div class="info-modal-body">\${info.body}</div>
+  \`;
+  document.getElementById('infoModal').classList.remove('hidden');
+}
+
+function closeInfoModal() {
+  document.getElementById('infoModal').classList.add('hidden');
+}
+
+function submitContact() {
+  const name    = document.getElementById('contactName')?.value.trim();
+  const email   = document.getElementById('contactEmail')?.value.trim();
+  const subject = document.getElementById('contactSubject')?.value.trim() || 'BookWise Enquiry';
+  const msg     = document.getElementById('contactMsg')?.value.trim();
+  if (!name || !email || !msg) {
+    return showToast('Please fill in all fields.', 'warning');
+  }
+  const mailSubject = encodeURIComponent('BookWise: ' + subject + ' (from ' + name + ')');
+  const mailBody    = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\nMessage:\n' + msg);
+  window.location.href = 'mailto:mr.asmat.com@gmail.com?subject=' + mailSubject + '&body=' + mailBody;
+  showToast('Opening your email client...', 'success');
+}
+
+// Close info modal on overlay click
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('infoModal')?.addEventListener('click', e => {
+    if (e.target === document.getElementById('infoModal')) closeInfoModal();
+  });
+});
+</script>
+
+</body>
+</html>
