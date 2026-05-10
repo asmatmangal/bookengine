@@ -1,0 +1,17 @@
+{
+  "name": "bookwise-fyp",
+  "version": "1.0.0",
+  "description": "AI-Powered Book Recommendation System — FYP by Asmat Ullah (BSCSM-22-50), BZU Multan. Supervisor: Dr. Muzaffar Hameed.",
+  "main": "index.html",
+  "scripts": {
+    "start":   "firebase serve --port 5000",
+    "deploy":  "firebase deploy",
+    "emulate": "firebase emulators:start"
+  },
+  "keywords": ["book", "recommendation", "ai", "firebase", "openai", "chatgpt", "fyp"],
+  "author": "Asmat Ullah <mr.asmat.com@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "firebase-tools": "^12.0.0"
+  }
+}
