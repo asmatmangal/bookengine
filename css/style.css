@@ -1249,7 +1249,8 @@ section + section {
   max-width: 460px;
   width: 95vw;
   padding: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  max-height: 94vh;
   background: linear-gradient(145deg, rgba(14,12,28,0.97) 0%, rgba(10,10,20,0.98) 100%);
   border: 1px solid rgba(212,168,83,0.18);
   box-shadow: 0 0 80px rgba(212,168,83,0.12), 0 32px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
