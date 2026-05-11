@@ -1,9 +1,5 @@
 # 📚 BookWise — AI-Powered Book Recommendation System
 
-**Final Year Project** | Asmat Ullah (BSCSM-22-50)  
-**University:** Bahauddin Zakariya University, Multan  
-**Supervisor:** Dr. Muzaffar Hameed  
-**Program:** BS(CS) Morning | Session 2022–2026
 
 ---
 
